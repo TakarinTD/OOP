@@ -65,7 +65,11 @@ public class CalcutateDemo extends JFrame implements ActionListener{
                 result=tf1.getText();
                 soNguyen.setMathExpression(result);
                 String[] elementMath = soNguyen.processString(soNguyen.getMathExpression());
-                elementMath = soNguyen.postfix(elementMath);     //  dua cac phan tu ve dang hau to
+                try{
+                    elementMath = soNguyen.postfix(elementMath);     //  dua cac phan tu ve dang hau to
+                }catch (Exception exception){
+                    tf2.setText("Biểu thức lỗi!");
+                }
                 tf2.setText(soNguyen.valueMath(elementMath));
         }
     }

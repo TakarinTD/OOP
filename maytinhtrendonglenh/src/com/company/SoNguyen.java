@@ -45,9 +45,13 @@ public class SoNguyen {
     }
 
     public BigInteger giaiThua(BigInteger operand){
-        BigInteger kq;
-        while (operand.equals(0)){}
-        return operand;
+        BigInteger kq=operand;
+        operand=operand.subtract(BigInteger.valueOf(1));
+        while (!operand.equals(BigInteger.ZERO)){
+            kq=kq.multiply(operand);
+            operand=operand.subtract(BigInteger.valueOf(1));
+        }
+        return kq;
     }
 
     public int precedence(char c){
@@ -69,6 +73,8 @@ public class SoNguyen {
     }
 
     public String[] processString(String sMath){
+        if(sMath.charAt(0)=='+'||sMath.charAt(0)=='-')
+            sMath="0"+sMath;
         String s1 = "", elementMath[] = null;
         sMath = sMath.trim();
         sMath = sMath.replaceAll("\\s+"," "); //    chuan hoa sMath
@@ -131,8 +137,8 @@ public class SoNguyen {
             if (!this.isOperator(c)) ketQua.push(elementMath[i]);
             else {
                 if(precedence(c)>=1&&precedence(c)<=3){
-                    if(ketQua.size()<2){
-                        String s="Lỗi biểu thức 1!";
+                    if(ketQua.size()==0) {
+                        String s="Thiếu toán hạng thực hiện các phép toán với 2 toán hạng!";
                         return s;
                     }
                     try {
@@ -174,26 +180,22 @@ public class SoNguyen {
                                 break;
                         }
                     } catch(Exception exception) {
-                        String s="Lỗi biểu thức 2!";
+                        String s="Biểu thức lỗi!";
                         return s;
                     }
                 }
                 else if(precedence(c)==4){
                     if(ketQua.size()<1){
-                        String s="Lỗi biểu thức 4!";
+                        String s="Thiếu toán hạng thực hiện phép tính giai thừa!";
                         return s;
                     }
                     else{
                         BigInteger m= new BigInteger(ketQua.pop());
-                        if(BigInteger.valueOf(0).compareTo(m)>0){
-                            String s="Lỗi biểu thức 6!";
-                            return s;
-                        }
-                        else num=this.giaiThua(m);
+                        num=this.giaiThua(m);
                     }
                 }
                 else{
-                    String s="Lỗi biểu thức 3!";
+                    String s="Biểu thức không phải một phép tính!";
                     return s;
                 }
                 ketQua.push(String.valueOf(num));
@@ -202,7 +204,7 @@ public class SoNguyen {
         if(ketQua.size()==1)
             return ketQua.pop();
         else {
-            String s="Lỗi biểu thức 5!";
+            String s="Biểu thức lỗi!";
             return s;
         }
     }
